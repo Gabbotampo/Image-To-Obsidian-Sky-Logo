@@ -1,97 +1,94 @@
 # Image-To-Obsidian-Sky-Logo
-A Python script that converts an image into a Minecraft schematic using obsidian and crying obsidian, preserving transparency and allowing easy import into Litematica for sky-logos.
 
+Image-To-Obsidian-Sky-Logo is a Python-based tool that converts images into Minecraft schematics. It processes PNG/JPG images, automatically scales them based on pixel density, corrects small structural gaps, and maps image colors to Minecraft blocks. The final output can be exported as a .litematic file (or .schem as a fallback).
 
-1. How the Python Script Works
+Features
+Converts PNG and JPG images into Minecraft schematics
+Automatic scaling based on target number of non-white pixels
+Image preprocessing with gap correction for improved structural quality
+Color-to-block mapping with Euclidean distance matching
+Direct .litematic export using litemapy
+Optional .schem export fallback using mcschematic
+Optimized processing using NumPy for large images
+Requirements
 
-The script converts an image into a Minecraft schematic with specific blocks.
+Install the required dependencies:
 
-How it works:
+pip install Pillow litemapy numpy
 
-Open the image
+Optional fallback support:
 
-Reads it in RGBA (red, green, blue, alpha).
+pip install mcschematic
+How It Works
 
-Transparent pixels become air in the schematic.
+SkyLogo Generator follows a multi-stage pipeline:
 
-Each pixel is equal to a block so for smaller logo just leave a low resolutuion
+Loads an image from the current working directory
+Computes the number of non-white pixels (image density estimation)
+Scales the image to match the requested target pixel count
+Applies gap correction to improve visual continuity
+Maps each pixel to the closest Minecraft block color
+Generates a Minecraft schematic file (.litematic or .schem)
+Block Mapping System
 
-Color recognition
+The tool uses a configurable color palette defined in COLOR_TO_BLOCK.
 
-Black (0, 0, 0) → obsidian
+Default mappings include:
 
-Purple #9F81D6 → crying obsidian
+Obsidian: dark tones and near-black colors
+Crying Obsidian: purple shades around #9F81D6
 
-All other pixels → air
+The system uses Euclidean distance in RGB space to determine the closest block match.
 
-Important: To have crying obsidian appear in the logo exactly where you want, the pixels must be colored #9F81D6 in your image.
+How it works
+Color recognition:
 
-Block placement
+Black (#000000) = obsidian
+Purple (#9G81D6 it MUST be this one) = crying obsidian
+Any other pixel including trasparent ones = air
 
-Schematic is horizontal (X-Z plane), Y=0.
-
-Saving
-
-Saved in the output folder as sky_logo.schem.
-
-2. How to Use the Script
-
-Make sure Python is installed.
-
-Install the libraries:
-
-pip install pillow mcschematic
-
-
-Image file
-
-The image must be named logo.png and placed in the same folder as the script.
-
+Usage
 Run the script:
 
-python program.py
+python skylogo_generator.py
 
+Then follow the interactive prompts:
 
-The schematic will be in output/sky_logo.schem.
+Enter the desired number of non-white pixels
+Select an image if multiple are present in the directory
+Wait for processing to complete
+Retrieve the output file from the output/ directory
 
-Supported colors:
+Output
+All generated schematics are saved in:
 
-Black → obsidian
+output/
 
-Purple #9F81D6 → crying obsidian
+Example output file:
 
-Transparent → air
+output/logo_sky.litematic
+Fallback Mode
 
-3. Importing the Schematic in Amulet
+If litemapy is not installed or fails during execution, the program automatically attempts to generate a .schem file using mcschematic.
 
-Create a creative superflat world (Empty preset).
+Performance Considerations
+Processing time increases with image resolution
+NumPy-based vectorization is used for efficiency
+Large images may require significant memory and processing time
+Block placement is optimized in batch operations where possible
+Limitations
+Only supports flat (Y = 0) schematic generation
+Limited default block palette (extendable manually)
+Very large images may lead to high memory usage
+No built-in GUI (CLI only)
+Future Improvements
+3D schematic support (multi-layer depth generation)
+Extended and biome-aware block palettes
+Graphical user interface (GUI)
+Real-time preview of generated schematics
+Advanced dithering for improved visual fidelity
+License
 
-Open it in Amulet.
-
-Go to import → Import file and select sky_logo.schem.
-
-Place it where you want, then save the world.
-
-Transparent pixels stay empty, no unwanted blocks appear.
-
-4. Create a Litematic for Litematica
-
-Open Minecraft with Litematica.
-
-Load the world with the imported schematic.
-
-Open M → Area Selection, select the schematic → Save → Litematic.
-
-You can now place it automatically in creative mode.
-
-5. Tips
-
-Keep the schematic horizontal for logos.
-
-Transparent areas in the image correspond to air.
-
-Avoid very large images for better performance.
-
-Pixels for crying obsidian must be exactly #9F81D6 for it to appear correctly.
+This project is free to use, modify, and distribute. Attribution is appreciated but not required.
 
 If you don't understend something write me on discord (gabbotampo).
