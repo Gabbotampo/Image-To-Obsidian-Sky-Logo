@@ -50,7 +50,7 @@ Any other pixel including trasparent ones = air
 Usage
 Run the script:
 
-python skylogo_generator.py
+python program.py
 
 Then follow the interactive prompts:
 
