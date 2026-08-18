@@ -44,7 +44,7 @@ How it works
 Color recognition:
 
 Black (#000000) = obsidian
-Purple (#9G81D6 it MUST be this one) = crying obsidian
+Purple (#9f81D6 it MUST be this one) = crying obsidian
 Any other pixel including trasparent ones = air
 
 Usage
